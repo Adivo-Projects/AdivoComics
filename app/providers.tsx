@@ -1,22 +1,26 @@
-import '@/app/globals.css';
+'use client';
+
 import { ReactNode, createContext, useEffect, useState } from 'react';
-import { getFirebaseAuth } from '@/lib/firebase/client';
+import { getFirebaseAuth, loadAnalytics } from '@/lib/firebase/client';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
-// Authentication context to expose the current user across the client app. This
-// provider sets up a listener on Firebase Auth and triggers re-renders when
-// auth state changes. Server components must not consume this context.
-
-export const AuthContext = createContext<{ user: User | null }>({ user: null });
+export const AuthContext = createContext<{ user: User | null; booting: boolean }>({
+  user: null,
+  booting: true,
+});
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [booting, setBooting] = useState(true);
+
   useEffect(() => {
+    void loadAnalytics().catch(() => undefined);
     const auth = getFirebaseAuth();
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u);
+    return onAuthStateChanged(auth, (nextUser) => {
+      setUser(nextUser);
+      setBooting(false);
     });
-    return () => unsub();
   }, []);
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
+
+  return <AuthContext.Provider value={{ user, booting }}>{children}</AuthContext.Provider>;
 }
