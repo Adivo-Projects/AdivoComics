@@ -1,5 +1,6 @@
 import { search as searchSeries } from '@/lib/komikstation';
 import SeriesCard from '@/components/SeriesCard';
+import { makeQuery } from '@/lib/query';
 
 interface Props {
   searchParams: { [key: string]: string | string[] | undefined };
@@ -48,7 +49,7 @@ export default async function SearchPage({ searchParams }: Props) {
             <div className="flex justify-center space-x-4 py-4">
               {data.pagination.currentPage > 1 && (
                 <a
-                  href={`?${new URLSearchParams({ q: query, ...(type && { type }), page: (data.pagination.currentPage - 1).toString() }).toString()}`}
+                  href={makeQuery({ q: query, type, page: data.pagination.currentPage - 1 })}
                   className="px-3 py-1 bg-surface border border-neutral-700 rounded text-sm hover:bg-neutral-800"
                 >
                   Previous
@@ -56,7 +57,7 @@ export default async function SearchPage({ searchParams }: Props) {
               )}
               {data.pagination.hasNext && (
                 <a
-                  href={`?${new URLSearchParams({ q: query, ...(type && { type }), page: (data.pagination.currentPage + 1).toString() }).toString()}`}
+                  href={makeQuery({ q: query, type, page: data.pagination.currentPage + 1 })}
                   className="px-3 py-1 bg-surface border border-neutral-700 rounded text-sm hover:bg-neutral-800"
                 >
                   Next
