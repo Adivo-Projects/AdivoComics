@@ -20,7 +20,8 @@ const firebaseConfig = {
 let app: FirebaseApp | null = null;
 export function getFirebaseApp(): FirebaseApp {
   if (!app) {
-    app = initializeApp(firebaseConfig);
+    const existing = getApps()[0];
+    app = existing || initializeApp(firebaseConfig);
   }
   return app;
 }
