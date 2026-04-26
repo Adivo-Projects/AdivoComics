@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../providers';
 import { getFirebaseDatabase } from '@/lib/firebase/client';
 import { onValue, ref } from 'firebase/database';
-import SeriesCard from '@/components/SeriesCard';
 import Link from 'next/link';
 
 interface FavoriteEntry {
@@ -54,4 +53,4 @@ export default function LibraryPage() {
       </div>
     </div>
   );
-      }
+}
