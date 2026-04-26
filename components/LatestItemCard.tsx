@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import type { LatestItem } from '@/lib/types';
+import { toChapterHref } from '@/lib/source-url';
 
 interface Props {
   item: LatestItem;
@@ -10,8 +10,8 @@ export default function LatestItemCard({ item }: Props) {
   return (
     <div className="flex gap-3 py-2 border-b border-neutral-800 last:border-none">
       {item.thumbnail && (
-        <div className="relative w-20 h-32 flex-shrink-0 bg-neutral-800 rounded">
-          <Image src={item.thumbnail} alt={item.title} fill className="object-cover" />
+        <div className="w-20 h-32 flex-shrink-0 bg-neutral-800 rounded overflow-hidden">
+          <img src={item.thumbnail} alt={item.title} loading="lazy" decoding="async" className="w-full h-full object-cover" />
         </div>
       )}
       <div className="flex-1">
@@ -22,7 +22,7 @@ export default function LatestItemCard({ item }: Props) {
         <ul className="mt-2 space-y-1">
           {item.chapters.map((ch) => (
             <li key={ch.url} className="text-xs">
-              <Link href={ch.url} className="hover:text-primary-dark">
+              <Link href={toChapterHref(ch.url, item.slug)} className="hover:text-primary-dark">
                 {ch.title}
               </Link>{' '}
               <span className="text-muted">{ch.date}</span>
