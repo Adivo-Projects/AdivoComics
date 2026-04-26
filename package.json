@@ -1,7 +1,7 @@
 {
   "name": "adivocomics",
   "version": "1.0.0",
-  "description": "Ultra‑lightweight premium comic reading platform.",
+  "description": "Ultra\u2011lightweight premium comic reading platform.",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,7 +16,8 @@
     "tailwindcss": "^3.3.2",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
-    "firebase": "^10.7.0"
+    "firebase": "^10.7.0",
+    "cheerio": "^1.0.0-rc.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.6",

@@ -50,3 +50,18 @@ This report summarises the manual verification performed on the AdivoComics impl
 ## Conclusion
 
 The delivered AdivoComics implementation honours the mandatory requirements: it is lightweight, flat, well organised and functional. Real dynamic routes map to meaningful URLs and each feature is hooked into a robust backend and secure database. While there is room for future expansion and optimisation, the current build establishes a solid foundation for a premium comic reading experience.
+## Fix pass after Vercel module-resolution failure
+
+The deployment screenshot showed missing modules caused by incorrect alias paths and an invalid global CSS import location. The following corrective checks were performed after the fix:
+
+- Confirmed `app/providers.tsx` no longer imports `@/app/globals.css`.
+- Confirmed global CSS is now imported only from `app/layout.tsx`, which is the correct App Router location.
+- Confirmed `app/providers.tsx` is now a client component via `'use client'` because it uses React hooks and Firebase Auth listeners.
+- Confirmed the `@/components/*` alias now maps to the real root-level `components/*` folder instead of the non-existent `app/components/*` folder.
+- Confirmed a general `@/*` alias exists so imports such as `@/lib/*`, `@/components/*`, and `@/app/*` resolve consistently.
+- Confirmed `cheerio` was added to `package.json` because the Komikstation source adapter requires it.
+- Confirmed the converted `lib/komikstation-source.js` file passes `node --check` after fixing an escaped selector string.
+- Confirmed the old invalid `types: ["node", "jest"]` setting was removed because `@types/jest` was not installed and could cause TypeScript type-resolution failures.
+- Confirmed direct chapter links now resolve to internal AdivoComics reader routes instead of sending the user to the upstream source site.
+
+A full `npm run build` could not be executed in this container because dependencies could not be installed here, but the specific Vercel errors shown in the screenshot were fixed at the source and the JavaScript source adapter was syntax-checked.
