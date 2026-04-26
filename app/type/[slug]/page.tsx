@@ -1,5 +1,6 @@
 import { getByType } from '@/lib/komikstation';
 import SeriesCard from '@/components/SeriesCard';
+import { makeQuery } from '@/lib/query';
 import { notFound } from 'next/navigation';
 
 interface Props {
@@ -24,7 +25,7 @@ export default async function TypePage({ params, searchParams }: Props) {
       <div className="flex justify-center space-x-4 py-4 text-sm">
         {data.pagination.currentPage > 1 && (
           <a
-            href={`?${new URLSearchParams({ ...(order && { order }), page: (data.pagination.currentPage - 1).toString() }).toString()}`}
+            href={makeQuery({ order, page: data.pagination.currentPage - 1 })}
             className="px-3 py-1 bg-surface border border-neutral-700 rounded hover:bg-neutral-800"
           >
             Previous
@@ -32,7 +33,7 @@ export default async function TypePage({ params, searchParams }: Props) {
         )}
         {data.pagination.hasNext && (
           <a
-            href={`?${new URLSearchParams({ ...(order && { order }), page: (data.pagination.currentPage + 1).toString() }).toString()}`}
+            href={makeQuery({ order, page: data.pagination.currentPage + 1 })}
             className="px-3 py-1 bg-surface border border-neutral-700 rounded hover:bg-neutral-800"
           >
             Next
